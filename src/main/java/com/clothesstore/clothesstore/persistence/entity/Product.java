@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "productos")
+@Table(name = "productos", uniqueConstraints = {@UniqueConstraint(columnNames = {"nombre"})})
 public class Product {
     @Id
     @Column(name = "producto_id")

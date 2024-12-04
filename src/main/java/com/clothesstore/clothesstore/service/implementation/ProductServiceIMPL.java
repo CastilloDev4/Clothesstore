@@ -6,6 +6,7 @@ import com.clothesstore.clothesstore.persistence.entity.Product;
 import com.clothesstore.clothesstore.persistence.repository.IProductRepository;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
 import com.clothesstore.clothesstore.service.exception.DiscountException;
+import com.clothesstore.clothesstore.service.exception.DuplicateNameException;
 import com.clothesstore.clothesstore.service.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,10 +14,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProductServiceIMPL implements IProductService {
 
-    private final IProductRepository iProductRepository;
+    private final IProductRepository productRepository;
     @Autowired
     public ProductServiceIMPL(IProductRepository iProductRepository) {
-        this.iProductRepository = iProductRepository;
+        this.productRepository = iProductRepository;
     }
 
 
@@ -34,8 +35,12 @@ public class ProductServiceIMPL implements IProductService {
                 .discount(productDTO.getDiscount())
                 .country(productDTO.getCountry())
                 .build();
+
+        if(productRepository.existsByName(product.getName())){
+            throw new DuplicateNameException("El producto "+ product.getName() + " ya existe");
+        }
         //Guardo el producto
-        return iProductRepository.save(product);
+        return productRepository.save(product);
     }
     private void validateDiscount(Integer discount, Country country) {
         if (discount > country.getMaxDiscount()) {

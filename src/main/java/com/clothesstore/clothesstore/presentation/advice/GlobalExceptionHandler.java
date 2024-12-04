@@ -2,6 +2,7 @@ package com.clothesstore.clothesstore.presentation.advice;
 
 
 import com.clothesstore.clothesstore.service.exception.DiscountException;
+import com.clothesstore.clothesstore.service.exception.DuplicateNameException;
 import com.clothesstore.clothesstore.service.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleException(Exception e) {
         return buildErrorResponse("Error interno del servidor", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(DuplicateNameException.class)
+    public ResponseEntity<Map<String, Object>> handleDuplicateNameException(DuplicateNameException e) {
+        return buildErrorResponse(e.getMessage(), HttpStatus.CONFLICT);
     }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(String message, HttpStatus status) {
