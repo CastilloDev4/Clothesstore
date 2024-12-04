@@ -7,6 +7,8 @@ import com.clothesstore.clothesstore.persistence.repository.IProductRepository;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
 import com.clothesstore.clothesstore.service.exception.DiscountException;
 import com.clothesstore.clothesstore.service.exception.DuplicateNameException;
+import com.clothesstore.clothesstore.service.exception.FieldEmptyException;
+import com.clothesstore.clothesstore.service.exception.NegativeValueException;
 import com.clothesstore.clothesstore.service.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,10 +37,33 @@ public class ProductServiceIMPL implements IProductService {
                 .discount(productDTO.getDiscount())
                 .country(productDTO.getCountry())
                 .build();
+        //validaciones
+        if (
+                product.getName() == null ||
+                product.getName().isEmpty() ||
+                product.getDescription() == null ||
+                product.getDescription().isEmpty() ||
+                product.getCountry() == null)
+        {
+            throw new FieldEmptyException("No pueden haber campos vacíos");
+        }
+        if(
+            product.getPrice() <= 0)
+        {
+            throw new NegativeValueException("El precio debe ser mayor a 0");
+        }
 
-        if(productRepository.existsByName(product.getName())){
+        if(
+                product.getDiscount() < 0)
+        {
+            throw new NegativeValueException("El descuento debe ser mayor o igual a 0");
+        }
+
+        if(productRepository.existsByName(product.getName()))
+        {
             throw new DuplicateNameException("El producto "+ product.getName() + " ya existe");
         }
+
         //Guardo el producto
         return productRepository.save(product);
     }

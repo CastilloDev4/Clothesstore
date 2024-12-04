@@ -1,5 +1,6 @@
 package com.clothesstore.clothesstore.persistence.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -33,7 +34,7 @@ public class Product {
 
     @Column(name = "descuento", nullable = false)
     @NotNull(message = "El descuento no puede estar vacio")
-    @Positive(message = "El descuento debe ser mayor a 0")
+    @Min(value = 0, message = "El descuento debe ser mayor o igual a 0")
     private int discount;
 
 
