@@ -24,19 +24,21 @@ public class ProductServiceIMPL implements IProductService {
         validateDiscount(productDTO.getDiscount(), productDTO.getCountry());
 
         //Creo el producto
-        Product product = new Product();
-        product.setName(productDTO.getName());
-        product.setDescription(productDTO.getDescription());
-        product.setPrice(productDTO.getPrice());
-        product.setDiscount(productDTO.getDiscount());
-        product.setCountry(productDTO.getCountry());
+
+        Product product = Product.builder()
+                .name(productDTO.getName())
+                .description(productDTO.getDescription())
+                .price(productDTO.getPrice())
+                .discount(productDTO.getDiscount())
+                .country(productDTO.getCountry())
+                .build();
 
         //Guardo el producto
         return iProductRepository.save(product);
     }
     private void validateDiscount(Integer discount, Country country) {
         if (discount > country.getMaxDiscount()) {
-            throw new IllegalArgumentException("El descuento no puede ser mayor al permitido por el país");
+            throw new IllegalArgumentException("El descuento para "+ country + " puede ser mayor al"+ country.getMaxDiscount() + "%");
         }
     }
 }
