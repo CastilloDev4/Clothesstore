@@ -1,16 +1,13 @@
 package com.clothesstore.clothesstore.presentation.dto;
 
 import com.clothesstore.clothesstore.persistence.entity.Country;
-import com.clothesstore.clothesstore.persistence.entity.Image;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class ProductDTO {
     private Long id;
     private String name;
