@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 public class ImageDTO {
     private Long id;
     private String url;
-    private Long size;
     private String descriptionImage;
     private Product product;
 
@@ -22,14 +21,6 @@ public class ImageDTO {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Long getSize() {
-        return size;
-    }
-
-    public void setSize(Long size) {
-        this.size = size;
     }
 
     public String getDescriptionImage() {
