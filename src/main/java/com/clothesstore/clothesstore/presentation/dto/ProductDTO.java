@@ -15,9 +15,16 @@ public class ProductDTO {
     private String description;
     private Double price;
     private Integer discount;
+    private Double discountPrice;
     private Country country;
     private List<ImageDTO> productImage = new ArrayList<>();
 
+    public Long getId() {
+        return id;}
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -57,6 +64,12 @@ public class ProductDTO {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+    public Double getDiscountPrice() {
+        return discountPrice;
+    }
+    public void setDiscountPrice(Double discountPrice) {
+        this.discountPrice = discountPrice;
     }
     public List<ImageDTO> getProductImage() {
         return productImage;

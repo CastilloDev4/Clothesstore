@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductServiceIMPL implements IProductService {
@@ -79,6 +80,7 @@ public class ProductServiceIMPL implements IProductService {
             .price(productDTO.getPrice())
             .discount(productDTO.getDiscount())
             .country(productDTO.getCountry())
+            .discountPrice(productDTO.getPrice() - (productDTO.getPrice() * productDTO.getDiscount() / 100))
             .build();
 
         List<Image> images;
@@ -96,10 +98,23 @@ public class ProductServiceIMPL implements IProductService {
         //Guardo el producto
         return productRepository.save(product);
     }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
+
+    @Override
+    public Optional<Product> findByName(String name) {
+        return productRepository.findByName(name);
+    }
+
     //validacion de descuento por pais
     private void validateDiscount(Integer discount, Country country) {
         if (discount > country.getMaxDiscount()) {
             throw new DiscountException("El descuento para "+ country + " no puede ser mayor al "+ country.getMaxDiscount() + "%");
         }
     }
+
+
 }

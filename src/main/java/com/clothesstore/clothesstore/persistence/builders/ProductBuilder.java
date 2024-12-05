@@ -4,10 +4,12 @@ import com.clothesstore.clothesstore.persistence.entity.Country;
 import com.clothesstore.clothesstore.persistence.entity.Product;
 
 public class ProductBuilder {
+
     private String name;
     private String description;
     private double price;
     private int discount;
+    private double discountPrice;
     private Country country;
 
 
@@ -31,6 +33,10 @@ public class ProductBuilder {
         this.discount = discount;
         return this;
     }
+    public ProductBuilder discountPrice(double discountPrice) {
+        this.discountPrice = discountPrice;
+        return this;
+    }
 
     public ProductBuilder country(Country country) {
         this.country = country;
@@ -43,6 +49,7 @@ public class ProductBuilder {
         product.setDescription(this.description);
         product.setPrice(this.price);
         product.setDiscount(this.discount);
+        product.setDiscountPrice(this.discountPrice);
         product.setCountry(this.country);
         return product;
     }

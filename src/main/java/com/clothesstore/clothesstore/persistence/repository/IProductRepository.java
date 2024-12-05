@@ -13,6 +13,8 @@ public interface IProductRepository extends CrudRepository<Product, Long> {
     Optional<Product> findByName(String name);
     List<Product> findTop10ByOrderByPriceDesc();
     boolean existsByName(String name);
+    Optional<Product> findById(Long id);
+
 
 
 }

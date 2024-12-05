@@ -1,4 +1,5 @@
 package com.clothesstore.clothesstore.persistence.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -18,6 +19,7 @@ public class Product {
     @Id
     @Column(name = "producto_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@JsonProperty("id")
     private Long id;
 
     @Column(name = "nombre", nullable = false, length = 100)
@@ -38,8 +40,12 @@ public class Product {
     @Min(value = 0, message = "El descuento debe ser mayor o igual a 0")
     private int discount;
 
+    @Column(name = "precio_descuento", nullable = false)
+    private double discountPrice;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+    @JsonIgnore
     private List<Image> productImage = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -47,6 +53,10 @@ public class Product {
     @NotNull(message = "El pais no puede estar vacio")
     private Country country;
 
+
+    public Long getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }
@@ -80,6 +90,15 @@ public class Product {
     public List<Image> getProductImage() {
         return productImage;
     }
+
+    public double getDiscountPrice() {
+        return discountPrice;
+    }
+    public void setDiscountPrice(double discountPrice) {
+        this.discountPrice = discountPrice;
+    }
+
+
     public void setProductImage(List<Image> productImage) {
         this.productImage = productImage;
     }

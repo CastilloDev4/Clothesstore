@@ -34,4 +34,18 @@ public class ProductController {
 
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<?> getByIdProduct(@PathVariable Long id) {
+        return productService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/getByName/{name}")
+    public ResponseEntity<?> getByNameProduct(@PathVariable String name) {
+        return productService.findByName(name)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
 }
