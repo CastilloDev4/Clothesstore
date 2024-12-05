@@ -3,7 +3,8 @@ package com.clothesstore.clothesstore.presentation.dto;
 import com.clothesstore.clothesstore.persistence.entity.Country;
 import lombok.*;
 
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -15,7 +16,7 @@ public class ProductDTO {
     private Double price;
     private Integer discount;
     private Country country;
-    //private List<ImageDTO> productImage = new ArrayList<>();
+    private List<ImageDTO> productImage = new ArrayList<>();
 
 
     public String getName() {
@@ -56,5 +57,11 @@ public class ProductDTO {
 
     public void setCountry(Country country) {
         this.country = country;
+    }
+    public List<ImageDTO> getProductImage() {
+        return productImage;
+    }
+    public void setProductImage(List<ImageDTO> productImage) {
+        this.productImage = productImage;
     }
 }

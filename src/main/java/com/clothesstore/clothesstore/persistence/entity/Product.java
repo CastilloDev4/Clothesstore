@@ -6,7 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
 
-
+import java.util.ArrayList;
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -38,8 +39,8 @@ public class Product {
     private int discount;
 
 
-    /*@OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Image> productImage = new ArrayList<>();*/
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Image> productImage = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(name = "Pais", nullable = false,length = 50)
@@ -75,6 +76,12 @@ public class Product {
     }
     public void setCountry(Country country) {
         this.country = country;
+    }
+    public List<Image> getProductImage() {
+        return productImage;
+    }
+    public void setProductImage(List<Image> productImage) {
+        this.productImage = productImage;
     }
 
 }
