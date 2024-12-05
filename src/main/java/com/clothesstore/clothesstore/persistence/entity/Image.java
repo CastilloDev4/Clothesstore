@@ -6,8 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
-@Setter
-@Getter
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -19,6 +18,9 @@ public class Image {
     @Column(name = "imagen_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "descripcion", nullable = false, length = 255)
+    @NotBlank(message = "La descripcion de la imagen no puede estar vacia")
+    private String descriptionImage;
 
     @Column(name = "url", nullable = false, length = 255)
     @NotBlank(message = "La url de la imagen no puede estar vacia")
@@ -32,4 +34,37 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
     private Product product;
+
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public String getDescriptionImage() {
+        return descriptionImage;
+    }
+
+    public void setDescriptionImage(String descriptionImage) {
+        this.descriptionImage = descriptionImage;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

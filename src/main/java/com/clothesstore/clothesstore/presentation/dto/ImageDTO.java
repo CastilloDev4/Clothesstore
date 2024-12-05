@@ -1,22 +1,20 @@
 package com.clothesstore.clothesstore.presentation.dto;
 
 import com.clothesstore.clothesstore.persistence.entity.Product;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
-
+@AllArgsConstructor
+@NoArgsConstructor
 public class ImageDTO {
     private Long id;
     private String url;
     private Long size;
+    private String descriptionImage;
     private Product product;
 
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUrl() {
         return url;
@@ -32,6 +30,14 @@ public class ImageDTO {
 
     public void setSize(Long size) {
         this.size = size;
+    }
+
+    public String getDescriptionImage() {
+        return descriptionImage;
+    }
+
+    public void setDescriptionImage(String descriptionImage) {
+        this.descriptionImage = descriptionImage;
     }
 
     public Product getProduct() {

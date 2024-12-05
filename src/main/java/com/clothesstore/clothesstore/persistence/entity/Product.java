@@ -84,4 +84,9 @@ public class Product {
         this.productImage = productImage;
     }
 
+    public void addImage(Image image) {
+        this.productImage.add(image);
+        image.setProduct(this);
+    }
+
 }
