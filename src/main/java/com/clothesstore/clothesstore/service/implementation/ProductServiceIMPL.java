@@ -5,6 +5,7 @@ import com.clothesstore.clothesstore.persistence.entity.Country;
 import com.clothesstore.clothesstore.persistence.entity.Image;
 import com.clothesstore.clothesstore.persistence.entity.Product;
 import com.clothesstore.clothesstore.persistence.repository.IProductRepository;
+import com.clothesstore.clothesstore.presentation.dto.MostSearchedProductDTO;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
 import com.clothesstore.clothesstore.service.exception.DiscountException;
 import com.clothesstore.clothesstore.service.exception.DuplicateNameException;
@@ -80,7 +81,7 @@ public class ProductServiceIMPL implements IProductService {
             .price(productDTO.getPrice())
             .discount(productDTO.getDiscount())
             .country(productDTO.getCountry())
-            .discountPrice(productDTO.getPrice() - (productDTO.getPrice() * productDTO.getDiscount() / 100))
+            .discountPrice(calculateDiscountPrice(productDTO.getPrice(), productDTO.getDiscount()))
             .build();
 
         List<Image> images;
@@ -101,12 +102,22 @@ public class ProductServiceIMPL implements IProductService {
 
     @Override
     public Optional<Product> findById(Long id) {
-        return productRepository.findById(id);
+        Optional<Product> product = productRepository.findById(id);
+        product.ifPresent(value -> {
+            value.setSearchCount(value.getSearchCount() + 1);
+            productRepository.save(value);
+        });
+        return product;
     }
 
     @Override
     public Optional<Product> findByName(String name) {
-        return productRepository.findByName(name);
+        Optional<Product> product = productRepository.findByName(name);
+        product.ifPresent(value -> {
+            value.setSearchCount(value.getSearchCount() + 1);
+            productRepository.save(value);
+        });
+        return product;
     }
 
     //validacion de descuento por pais
@@ -114,6 +125,38 @@ public class ProductServiceIMPL implements IProductService {
         if (discount > country.getMaxDiscount()) {
             throw new DiscountException("El descuento para "+ country + " no puede ser mayor al "+ country.getMaxDiscount() + "%");
         }
+    }
+    // calcular descuento
+    private Double calculateDiscountPrice(Double price, Integer discount) {
+
+        return price - (price * discount / 100);
+    }
+
+    //obtener productos mas buscados
+    @Override
+    public List<MostSearchedProductDTO> getMostSearchedProducts() {
+        List<Product> mostSearchedProducts = productRepository.findMostSearchedProducts();
+
+        return mostSearchedProducts.stream().map(product -> {
+            MostSearchedProductDTO dto = new MostSearchedProductDTO();
+            dto.setName(product.getName());
+            dto.setPrice(product.getPrice());
+            dto.setDiscountPrice(calculateDiscountPrice(product.getPrice(), product.getDiscount()));
+            dto.setDiscount(product.getDiscount());
+
+            // Se obtienen las imagenes frontales y traseras
+            Optional<Image> frontImage = product.getProductImage().stream()
+                    .filter(image -> "frontal".equalsIgnoreCase(image.getDescriptionImage()))
+                    .findFirst();
+            Optional<Image> backImage = product.getProductImage().stream()
+                    .filter(image -> "trasera".equalsIgnoreCase(image.getDescriptionImage()))
+                    .findFirst();
+
+            dto.setFrontImage(frontImage.map(Image::getUrl).orElse(null));
+            dto.setBackImage(backImage.map(Image::getUrl).orElse(null));
+            dto.setSearchCount(product.getSearchCount());
+            return dto;
+        }).toList();
     }
 
 

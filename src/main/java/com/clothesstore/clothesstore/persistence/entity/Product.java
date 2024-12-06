@@ -43,6 +43,10 @@ public class Product {
     @Column(name = "precio_descuento", nullable = false)
     private double discountPrice;
 
+    @Column(name = "busquedas", nullable = false)
+    @JsonIgnore
+    private int searchCount = 0;
+
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonIgnore
@@ -96,6 +100,13 @@ public class Product {
     }
     public void setDiscountPrice(double discountPrice) {
         this.discountPrice = discountPrice;
+    }
+
+    public int getSearchCount() {
+        return searchCount;
+    }
+    public void setSearchCount(int searchCount) {
+        this.searchCount = searchCount;
     }
 
 

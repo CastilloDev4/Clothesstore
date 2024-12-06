@@ -16,6 +16,7 @@ public class ProductDTO {
     private Double price;
     private Integer discount;
     private Double discountPrice;
+    private int searchCount;
     private Country country;
     private List<ImageDTO> productImage = new ArrayList<>();
 
@@ -56,6 +57,13 @@ public class ProductDTO {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    public int getSearchCount() {
+        return searchCount;
+    }
+    public void setSearchCount(int searchCount) {
+        this.searchCount = searchCount;
     }
 
     public Country getCountry() {

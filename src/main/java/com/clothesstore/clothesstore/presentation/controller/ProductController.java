@@ -1,6 +1,7 @@
 package com.clothesstore.clothesstore.presentation.controller;
 
 import com.clothesstore.clothesstore.persistence.entity.Product;
+import com.clothesstore.clothesstore.presentation.dto.MostSearchedProductDTO;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
 import com.clothesstore.clothesstore.service.implementation.S3Service;
 import com.clothesstore.clothesstore.service.interfaces.IProductService;
@@ -9,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @CrossOrigin(origins = "*")
@@ -46,6 +49,13 @@ public class ProductController {
         return productService.findByName(name)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/getTopSearched")
+    public ResponseEntity<?> getTopSearched() {
+        List<MostSearchedProductDTO> mostSearchedProductDTOS = productService.getMostSearchedProducts();
+        return ResponseEntity.ok(mostSearchedProductDTOS);
+
     }
 
 }
