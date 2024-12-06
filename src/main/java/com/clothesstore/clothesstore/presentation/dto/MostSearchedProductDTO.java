@@ -1,6 +1,8 @@
 package com.clothesstore.clothesstore.presentation.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class MostSearchedProductDTO {
     private String name;
     private Double price;
@@ -8,6 +10,7 @@ public class MostSearchedProductDTO {
     private int discount;
     private String frontImage;
     private String backImage;
+    @JsonIgnore
     private int searchCount;
 
     public String getName() {

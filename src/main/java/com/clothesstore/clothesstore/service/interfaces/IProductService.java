@@ -8,9 +8,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface IProductService {
-    Product saveProduct(ProductDTO productDTO);
+    Product save(ProductDTO productDTO);
     Optional<Product> findById(Long id);
     Optional<Product> findByName(String name);
     List<MostSearchedProductDTO> getMostSearchedProducts();
+
 
 }

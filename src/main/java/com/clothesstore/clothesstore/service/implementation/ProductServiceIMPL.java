@@ -1,5 +1,4 @@
 package com.clothesstore.clothesstore.service.implementation;
-
 import com.clothesstore.clothesstore.persistence.builders.ProductBuilder;
 import com.clothesstore.clothesstore.persistence.entity.Country;
 import com.clothesstore.clothesstore.persistence.entity.Image;
@@ -15,10 +14,10 @@ import com.clothesstore.clothesstore.service.interfaces.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class ProductServiceIMPL implements IProductService {
@@ -36,7 +35,7 @@ public class ProductServiceIMPL implements IProductService {
 
     @Transactional
     @Override
-    public Product saveProduct(ProductDTO productDTO) {
+    public Product save(ProductDTO productDTO) {
 
 
         //VALIDACIONES ANTES DE CREAR EL PRODUCTO
@@ -73,8 +72,11 @@ public class ProductServiceIMPL implements IProductService {
         }
 
 
+
         //Creo el producto
+
         Product product = new ProductBuilder()
+
 
             .name(productDTO.getName())
             .description(productDTO.getDescription())
@@ -93,12 +95,15 @@ public class ProductServiceIMPL implements IProductService {
         }
         for (Image image : images) {
             image.setProduct(product); // Asigno el producto a la imagen
-            product.addImage(image); // Asigno la imagen al producto
+            product.addImage(image);
         }
-
         //Guardo el producto
         return productRepository.save(product);
+
     }
+
+
+
 
     @Override
     public Optional<Product> findById(Long id) {
@@ -136,6 +141,10 @@ public class ProductServiceIMPL implements IProductService {
     @Override
     public List<MostSearchedProductDTO> getMostSearchedProducts() {
         List<Product> mostSearchedProducts = productRepository.findMostSearchedProducts();
+        if(mostSearchedProducts.isEmpty())
+        {
+            throw new FieldEmptyException("No hay ningun producto buscado hasta el momento");
+        }
 
         return mostSearchedProducts.stream().map(product -> {
             MostSearchedProductDTO dto = new MostSearchedProductDTO();
@@ -158,6 +167,9 @@ public class ProductServiceIMPL implements IProductService {
             return dto;
         }).toList();
     }
+
+
+
 
 
 }

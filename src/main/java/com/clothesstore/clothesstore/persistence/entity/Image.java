@@ -1,7 +1,5 @@
 package com.clothesstore.clothesstore.persistence.entity;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -38,6 +36,9 @@ public class Image {
     @JsonBackReference
     private Product product;
 
+    public Long getId() {
+        return id;
+    }
 
     public String getUrl() {
         return url;

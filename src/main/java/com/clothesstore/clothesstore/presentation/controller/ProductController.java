@@ -32,7 +32,7 @@ public class ProductController {
     public ResponseEntity<?> create(@Valid @RequestBody ProductDTO productDTO) {
 
             // se guarda el producto con las imagenes
-            Product product = productService.saveProduct(productDTO);
+            Product product = productService.save(productDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(product);
 
     }

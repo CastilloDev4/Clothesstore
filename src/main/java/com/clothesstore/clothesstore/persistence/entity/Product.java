@@ -19,7 +19,7 @@ public class Product {
     @Id
     @Column(name = "producto_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    //@JsonProperty("id")
+    @JsonIgnore
     private Long id;
 
     @Column(name = "nombre", nullable = false, length = 100)
@@ -41,6 +41,7 @@ public class Product {
     private int discount;
 
     @Column(name = "precio_descuento", nullable = false)
+    @JsonIgnore
     private double discountPrice;
 
     @Column(name = "busquedas", nullable = false)
