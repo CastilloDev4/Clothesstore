@@ -1,7 +1,6 @@
 package com.clothesstore.clothesstore.presentation.dto;
 
 import com.clothesstore.clothesstore.persistence.entity.Country;
-import com.clothesstore.clothesstore.persistence.entity.Image;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -12,16 +11,24 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProductDTO {
+    @JsonIgnore
+    private Long id;
     private String name;
     private String description;
     private Double price;
     private Integer discount;
+    @JsonIgnore
     private int searchCount;
     private Country country;
     private List<ImageDTO> productImage = new ArrayList<>();
 
 
-
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

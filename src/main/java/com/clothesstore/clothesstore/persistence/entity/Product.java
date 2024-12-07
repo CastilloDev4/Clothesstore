@@ -1,4 +1,5 @@
 package com.clothesstore.clothesstore.persistence.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -50,7 +51,7 @@ public class Product {
 
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
-    @JsonIgnore
+    @JsonBackReference
     private List<Image> productImage = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
@@ -94,6 +95,7 @@ public class Product {
     }
     public List<Image> getProductImage() {
         return productImage;
+
     }
 
     public double getDiscountPrice() {
@@ -109,6 +111,7 @@ public class Product {
     public void setSearchCount(int searchCount) {
         this.searchCount = searchCount;
     }
+
 
 
     public void setProductImage(List<Image> productImage) {

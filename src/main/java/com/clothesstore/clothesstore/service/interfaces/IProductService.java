@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface IProductService {
     Product save(ProductDTO productDTO);
-    Optional<Product> findById(Long id);
-    Optional<Product> findByName(String name);
+    Optional<ProductDTO> findById(Long id);
+    Optional<ProductDTO> findByName(String name);
     List<MostSearchedProductDTO> getMostSearchedProducts();
 
 

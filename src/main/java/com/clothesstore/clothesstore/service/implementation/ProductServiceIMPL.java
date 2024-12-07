@@ -4,6 +4,7 @@ import com.clothesstore.clothesstore.persistence.entity.Country;
 import com.clothesstore.clothesstore.persistence.entity.Image;
 import com.clothesstore.clothesstore.persistence.entity.Product;
 import com.clothesstore.clothesstore.persistence.repository.IProductRepository;
+import com.clothesstore.clothesstore.presentation.dto.ImageDTO;
 import com.clothesstore.clothesstore.presentation.dto.MostSearchedProductDTO;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
 import com.clothesstore.clothesstore.service.exception.DiscountException;
@@ -102,27 +103,56 @@ public class ProductServiceIMPL implements IProductService {
 
     }
 
-
-
-
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<ProductDTO> findById(Long id) {
         Optional<Product> product = productRepository.findById(id);
-        product.ifPresent(value -> {
+        return product.map(value -> {
             value.setSearchCount(value.getSearchCount() + 1);
             productRepository.save(value);
+            ProductDTO dto = new ProductDTO();
+            dto.setId(value.getId());
+            dto.setName(value.getName());
+            dto.setDescription(value.getDescription());
+            dto.setPrice(value.getPrice());
+            dto.setDiscount(value.getDiscount());
+            dto.setSearchCount(value.getSearchCount());
+            dto.setCountry(value.getCountry());
+
+            List<ImageDTO> imageDTOS = value.getProductImage().stream()
+                    .map(this::mapImageToImageDTO)
+                    .toList();
+            dto.setProductImage(imageDTOS);
+
+
+
+            return dto;
         });
-        return product;
     }
 
+
+
+
     @Override
-    public Optional<Product> findByName(String name) {
+    public Optional<ProductDTO> findByName(String name) {
         Optional<Product> product = productRepository.findByName(name);
-        product.ifPresent(value -> {
+        return product.map(value -> {
             value.setSearchCount(value.getSearchCount() + 1);
             productRepository.save(value);
+            ProductDTO dto = new ProductDTO();
+            dto.setId(value.getId());
+            dto.setName(value.getName());
+            dto.setDescription(value.getDescription());
+            dto.setPrice(value.getPrice());
+            dto.setDiscount(value.getDiscount());
+            dto.setSearchCount(value.getSearchCount());
+            dto.setCountry(value.getCountry());
+
+            List<ImageDTO> imageDTOS = value.getProductImage().stream()
+                    .map(this::mapImageToImageDTO)
+                    .toList();
+            dto.setProductImage(imageDTOS);
+            return dto;
         });
-        return product;
     }
 
     //validacion de descuento por pais
@@ -153,19 +183,33 @@ public class ProductServiceIMPL implements IProductService {
             dto.setDiscountPrice(calculateDiscountPrice(product.getPrice(), product.getDiscount()));
             dto.setDiscount(product.getDiscount());
 
+
+
             // Se obtienen las imagenes frontales y traseras
-            Optional<Image> frontImage = product.getProductImage().stream()
+            Optional<ImageDTO> frontImage = product.getProductImage().stream()
                     .filter(image -> "frontal".equalsIgnoreCase(image.getDescriptionImage()))
-                    .findFirst();
-            Optional<Image> backImage = product.getProductImage().stream()
-                    .filter(image -> "trasera".equalsIgnoreCase(image.getDescriptionImage()))
+                    .map(this::mapImageToImageDTO) // Transformar a ImageDTO
                     .findFirst();
 
-            dto.setFrontImage(frontImage.map(Image::getUrl).orElse(null));
-            dto.setBackImage(backImage.map(Image::getUrl).orElse(null));
+            Optional<ImageDTO> backImage = product.getProductImage().stream()
+                    .filter(image -> "trasera".equalsIgnoreCase(image.getDescriptionImage()))
+                    .map(this::mapImageToImageDTO) // Transformar a ImageDTO
+                    .findFirst();
+
+            dto.setFrontImage(frontImage.map(ImageDTO::getUrl).orElse(null));
+            dto.setBackImage(backImage.map(ImageDTO::getUrl).orElse(null));
             dto.setSearchCount(product.getSearchCount());
             return dto;
         }).toList();
+    }
+
+    private ImageDTO mapImageToImageDTO(Image image) {
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setId(image.getId());
+        imageDTO.setUrl(image.getUrl());
+        imageDTO.setDescriptionImage(image.getDescriptionImage());
+
+        return imageDTO;
     }
 
 

@@ -1,5 +1,6 @@
 package com.clothesstore.clothesstore.service.implementation;
 
+import com.clothesstore.clothesstore.persistence.builders.ImageBuilder;
 import com.clothesstore.clothesstore.persistence.entity.Image;
 import com.clothesstore.clothesstore.presentation.dto.ImageDTO;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
@@ -60,14 +61,24 @@ public class S3Service {
             }
 
             // Crear entidad Image y establecer el tamaño
-            Image image = new Image();
-            image.setUrl(imageUrl);
-            image.setSize(imageSize); // Establecer el tamaño calculado en la bd
-            image.setDescriptionImage(imageDTO.getDescriptionImage());
-            image.setProduct(null); // se asigna en productservice
-            images.add(image);
+            Image image = new ImageBuilder()
+                .url(imageUrl)
+                .description(imageDTO.getDescriptionImage())
+                .size(imageSize)
+                .product(null)
+                .build();
+                images.add(image);
 
 
+
+
+//            Image image = new Image();
+//            image.setUrl(imageUrl);
+//            image.setSize(imageSize); // Establecer el tamaño calculado en la bd
+//            image.setDescriptionImage(imageDTO.getDescriptionImage());
+//            image.setProduct(null); // se asigna en productservice
+//            images.add(image);
+//
 
         }
 
@@ -145,6 +156,15 @@ public class S3Service {
 
         String region = "us-east-2";
         return String.format("https://%s.s3.%s.amazonaws.com/%s", bucketName, region, key);
+    }
+
+    private ImageDTO mapImageToImageDTO(Image image) {
+        ImageDTO imageDTO = new ImageDTO();
+        imageDTO.setId(image.getId());
+        imageDTO.setUrl(image.getUrl());
+        imageDTO.setDescriptionImage(image.getDescriptionImage());
+
+        return imageDTO;
     }
 }
 

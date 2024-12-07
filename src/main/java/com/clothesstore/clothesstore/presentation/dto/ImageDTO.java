@@ -1,18 +1,26 @@
 package com.clothesstore.clothesstore.presentation.dto;
 
 import com.clothesstore.clothesstore.persistence.entity.Product;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
 public class ImageDTO {
+    @JsonIgnore
     private Long id;
     private String url;
     private String descriptionImage;
+    @JsonIgnore
     private Product product;
 
-
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
     public String getUrl() {

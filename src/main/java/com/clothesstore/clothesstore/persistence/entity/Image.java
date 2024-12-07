@@ -1,5 +1,6 @@
 package com.clothesstore.clothesstore.persistence.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,6 +18,7 @@ public class Image {
     @Id
     @Column(name = "imagen_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     private Long id;
     @Column(name = "descripcion", nullable = false, length = 255)
     @NotBlank(message = "La descripcion de la imagen no puede estar vacia")
@@ -30,7 +32,6 @@ public class Image {
     @Column(name = "tamaño", nullable = false)
     @NotNull(message = "El tamaño de la imagen no puede estar vacio")
     private Long size;
-
     @ManyToOne
     @JoinColumn(name = "producto_id", nullable = false)
     @JsonBackReference
