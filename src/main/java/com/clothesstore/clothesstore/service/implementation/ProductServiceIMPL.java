@@ -157,8 +157,12 @@ public class ProductServiceIMPL implements IProductService {
 
     //validacion de descuento por pais
     private void validateDiscount(Integer discount, Country country) {
+        if (discount == null) {
+            throw new FieldEmptyException("El descuento no puede estar vacio");
+        }
+
         if (discount > country.getMaxDiscount()) {
-            throw new DiscountException("El descuento para "+ country + " no puede ser mayor al "+ country.getMaxDiscount() + "%");
+            throw new DiscountException("El descuento para " + country + " no puede ser mayor al " + country.getMaxDiscount() + "%");
         }
     }
     // calcular descuento
