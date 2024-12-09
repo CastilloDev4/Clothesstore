@@ -12,6 +12,6 @@ public interface IProductService {
     Optional<ProductDTO> findById(Long id);
     Optional<ProductDTO> findByName(String name);
     List<MostSearchedProductDTO> getMostSearchedProducts();
-
-
+    void deleteById(Long id);
+    Product update(Long id,ProductDTO productDTO);
 }

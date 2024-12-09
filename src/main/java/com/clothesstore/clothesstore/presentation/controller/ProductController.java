@@ -57,5 +57,17 @@ public class ProductController {
         return ResponseEntity.ok(mostSearchedProductDTOS);
 
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> deleteById(@PathVariable Long id) {
+        productService.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody ProductDTO productDTO) {
+        Product product = productService.update(id, productDTO);
+        return ResponseEntity.ok(product);
+    }
+
 
 }

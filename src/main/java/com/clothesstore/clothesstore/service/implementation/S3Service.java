@@ -118,7 +118,7 @@ public class S3Service {
     }
     //calcula la imagen DESPUES de redimensionada
     private long calculateSize(BufferedImage imagen) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); //contenedor en memoria para datos binarios
         ImageIO.write(imagen, "jpg", baos);
         baos.flush();
         long size = baos.size();
@@ -137,7 +137,7 @@ public class S3Service {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         ImageIO.write(imagen, "jpg", baos);
         baos.flush();
-        byte[] imagenBytes = baos.toByteArray();
+        byte[] imagenBytes = baos.toByteArray(); //convierte en bytes
         baos.close();
 
         try {

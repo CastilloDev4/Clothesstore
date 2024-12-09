@@ -207,6 +207,42 @@ public class ProductServiceIMPL implements IProductService {
         }).toList();
     }
 
+    @Override
+    public void deleteById(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    @Override
+    public Product update(Long id, ProductDTO productDTO) {
+        Optional<Product> product = productRepository.findById(id);
+        if (product.isEmpty()) {
+            throw new FieldEmptyException("El producto con el id " + id + " no existe");
+        }
+
+        Product productToUpdate = product.get();
+        productToUpdate.setName(productDTO.getName());
+        productToUpdate.setDescription(productDTO.getDescription());
+        productToUpdate.setPrice(productDTO.getPrice());
+        productToUpdate.setDiscount(productDTO.getDiscount());
+        productToUpdate.setCountry(productDTO.getCountry());
+        productToUpdate.setDiscountPrice(calculateDiscountPrice(productDTO.getPrice(), productDTO.getDiscount()));
+
+        List<Image> images;
+        try {
+            images = s3Service.handleImageUpload(productDTO);
+        } catch (IOException e) {
+            throw new RuntimeException("Error al manejar la carga de las imagenes: " + e.getMessage(), e);
+        }
+
+        for (Image image : images) {
+            image.setProduct(productToUpdate); // Asigno el producto a la imagen
+            productToUpdate.addImage(image);
+        }
+
+        return productRepository.save(productToUpdate);
+    }
+
+
     private ImageDTO mapImageToImageDTO(Image image) {
         ImageDTO imageDTO = new ImageDTO();
         imageDTO.setId(image.getId());
