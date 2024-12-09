@@ -80,7 +80,7 @@ public class ProductServiceIMPLTest {
 
     @Test
     void testSaveProduct_ThrowsDuplicateNameException() {
-        // Given: A product with the same name already exists
+        // Given:
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName("camisa");
         productDTO.setDescription("Camisa de vestir");
@@ -88,15 +88,15 @@ public class ProductServiceIMPLTest {
         productDTO.setDiscount(20);
         productDTO.setCountry(Country.COLOMBIA);
 
-        // Simulamos que un producto con el mismo nombre ya existe en el repositorio
+        //  producto con el mismo nombre ya existe en el repositorio
         Mockito.when(productRepository.existsByName(productDTO.getName())).thenReturn(true);
 
-        // When & Then: save throws DuplicateNameException
+        // When and  Then
         Assertions.assertThrows(DuplicateNameException.class, () -> productServiceIMPL.save(productDTO));
     }
     @Test
     void TestSaveProduct_ThrowsDiscountException() {
-        // Given: A product with a discount greater than 100
+        // Given:
         ProductDTO productDTO = new ProductDTO();
         productDTO.setName("camisa");
         productDTO.setDescription("Camisa de vestir");
@@ -104,7 +104,7 @@ public class ProductServiceIMPLTest {
         productDTO.setDiscount(120);
         productDTO.setCountry(Country.COLOMBIA);
 
-        // When & Then: save throws DiscountException
+        // When and Then
         Assertions.assertThrows(DiscountException.class, () -> productServiceIMPL.save(productDTO));
     }
 
@@ -133,20 +133,20 @@ public class ProductServiceIMPLTest {
 
     @Test
     void testFindById_NotFound() {
-        // Given: A product with id 1 does not exist
+        // Given:
         Mockito.when(productRepository.findById(1L)).thenReturn(Optional.empty());
 
-        // When I search for a product with id 1
+        // When
         Optional<ProductDTO> result = productServiceIMPL.findById(1L);
 
-        // Then: The result is empty
+        // Then:
         Assertions.assertFalse(result.isPresent());
     }
 
 
     @Test
     void testGetMostSearchedProducts_Success() {
-        // Given: A list of most searched products exists
+        // Given:
         Product product = new Product();
         product.setName("Gorra");
         product.setPrice(100.0);
@@ -155,10 +155,10 @@ public class ProductServiceIMPLTest {
 
         Mockito.when(productRepository.findMostSearchedProducts()).thenReturn(List.of(product));
 
-        // When: getMostSearchedProducts is called
+        // When:
         List<MostSearchedProductDTO> result = productServiceIMPL.getMostSearchedProducts();
 
-        // Then: The result contains the most searched products
+        // Then:
         Assertions.assertFalse(result.isEmpty());
         Assertions.assertEquals(product.getName(), result.get(0).getName());
     }
@@ -166,10 +166,10 @@ public class ProductServiceIMPLTest {
 
     @Test
     void testGetMostSearchedProducts_Empty() {
-        // Given: No most searched products exist
+        // Given:
         Mockito.when(productRepository.findMostSearchedProducts()).thenReturn(Collections.emptyList());
 
-        // When & Then: getMostSearchedProducts throws FieldEmptyException
+        // When and then
         Assertions.assertThrows(FieldEmptyException.class, productServiceIMPL::getMostSearchedProducts);
     }
 
