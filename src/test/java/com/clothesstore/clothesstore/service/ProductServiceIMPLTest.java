@@ -6,6 +6,8 @@ import com.clothesstore.clothesstore.persistence.entity.Product;
 import com.clothesstore.clothesstore.persistence.repository.IProductRepository;
 import com.clothesstore.clothesstore.presentation.dto.MostSearchedProductDTO;
 import com.clothesstore.clothesstore.presentation.dto.ProductDTO;
+import com.clothesstore.clothesstore.service.exception.DiscountException;
+import com.clothesstore.clothesstore.service.exception.DuplicateNameException;
 import com.clothesstore.clothesstore.service.exception.FieldEmptyException;
 import com.clothesstore.clothesstore.service.implementation.ProductServiceIMPL;
 import com.clothesstore.clothesstore.service.implementation.S3Service;
@@ -67,12 +69,43 @@ public class ProductServiceIMPLTest {
 
     @Test
     void testSaveProduct_ThrowsFieldEmptyException() {
-        // Given: A ProductDTO missing required fields
+        // Given:
         ProductDTO productDTO = new ProductDTO();
-        productDTO.setName(null); // Missing required fields
+        productDTO.setName("null");
 
-        // When & Then: save throws FieldEmptyException
+
+        // When  Then:
         Assertions.assertThrows(FieldEmptyException.class, () -> productServiceIMPL.save(productDTO));
+    }
+
+    @Test
+    void testSaveProduct_ThrowsDuplicateNameException() {
+        // Given: A product with the same name already exists
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName("camisa");
+        productDTO.setDescription("Camisa de vestir");
+        productDTO.setPrice(120.000);
+        productDTO.setDiscount(20);
+        productDTO.setCountry(Country.COLOMBIA);
+
+        // Simulamos que un producto con el mismo nombre ya existe en el repositorio
+        Mockito.when(productRepository.existsByName(productDTO.getName())).thenReturn(true);
+
+        // When & Then: save throws DuplicateNameException
+        Assertions.assertThrows(DuplicateNameException.class, () -> productServiceIMPL.save(productDTO));
+    }
+    @Test
+    void TestSaveProduct_ThrowsDiscountException() {
+        // Given: A product with a discount greater than 100
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName("camisa");
+        productDTO.setDescription("Camisa de vestir");
+        productDTO.setPrice(120.000);
+        productDTO.setDiscount(120);
+        productDTO.setCountry(Country.COLOMBIA);
+
+        // When & Then: save throws DiscountException
+        Assertions.assertThrows(DiscountException.class, () -> productServiceIMPL.save(productDTO));
     }
 
     @Test
