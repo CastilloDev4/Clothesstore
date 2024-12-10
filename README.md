@@ -60,6 +60,36 @@ This project follows a standard layout for a Spring Boot application
 5. Run the API
 * The API will be available at http://localhost:8080 by default
 
+ ### POST Request
+ * To create a product, you need to send a JSON payload in the following format to the corresponding endpoint
+  ```sh
+  {
+  "name": "<<your product name>>",
+  "description": "<<your product description>>",
+  "price": <<your product price>>,
+  "discount": <<your product discount percentage>>,
+  "country": "<<COLOMBIA, MEXICO, CHILE OR PERU>>",
+  "productImage": [
+    {
+      "url": "<<your image URL>>",
+      "descriptionImage": "Your description"
+    },
+    {
+      "url": "<<your image URL>>",
+      "descriptionImage": "frontal"
+    },
+    {
+      "url": "<<your image URL>>",
+      "descriptionImage": "trasera"
+    }
+  ]
+}
+```
+* You can add more images if you want
+* **_Ensure that the descriptionImage for each image is correctly labeled as:_**
+* "frontal" for the front image.
+* "trasera" for the back image.
+
 ### API Documentation
 * This project includes OpenAPI documentation (Swagger).
 * Once the API is running, you can access the documentation at:
