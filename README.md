@@ -90,10 +90,32 @@ This project follows a standard layout for a Spring Boot application
 * "frontal" for the front image.
 * "trasera" for the back image.
 
+
+
+
+
+ ### Test the Deployed Application
+* **_You can test the application directly on the deployed instance._**
+* Base URL:
+* http://18.216.191.209
+**Available Endpoints**
+
+* POST /api/products/save
+* GET /api/products/get/{id}
+* GET /api/products/getByName/{name}
+* GET /api/products/getTopSearched
+* GET /api/products/findAll
+* DELETE /api/products/delete/{id}
+* PUT /api/products/update/{id}
+
+
+
 ### API Documentation
 * This project includes OpenAPI documentation (Swagger).
 * Once the API is running, you can access the documentation at:
 http://localhost:8080/swagger-ui.html
+* OR http://18.216.191.209/swagger-ui.html
+
 
 
 
