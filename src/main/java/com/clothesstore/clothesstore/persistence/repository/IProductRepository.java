@@ -17,6 +17,7 @@ public interface IProductRepository extends CrudRepository<Product, Long> {
     boolean existsByName(String name);
     Optional<Product> findById(Long id);
     void deleteById(Long id);
+    List<Product> findAll();
 
 
 

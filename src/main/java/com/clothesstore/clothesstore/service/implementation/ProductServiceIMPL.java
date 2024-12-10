@@ -242,6 +242,30 @@ public class ProductServiceIMPL implements IProductService {
         return productRepository.save(productToUpdate);
     }
 
+    @Override
+    public List<ProductDTO> findAll() {
+        List<Product> products = productRepository.findAll();
+        if (products.isEmpty()) {
+            throw new FieldEmptyException("No hay productos en la base de datos");
+        }
+        return products.stream().map(product -> {
+            ProductDTO dto = new ProductDTO();
+            dto.setId(product.getId());
+            dto.setName(product.getName());
+            dto.setDescription(product.getDescription());
+            dto.setPrice(product.getPrice());
+            dto.setDiscount(product.getDiscount());
+            dto.setCountry(product.getCountry());
+            dto.setSearchCount(product.getSearchCount());
+
+            List<ImageDTO> imageDTOS = product.getProductImage().stream()
+                    .map(this::mapImageToImageDTO)
+                    .toList();
+            dto.setProductImage(imageDTOS);
+            return dto;
+        }).toList();
+    }
+
 
     private ImageDTO mapImageToImageDTO(Image image) {
         ImageDTO imageDTO = new ImageDTO();

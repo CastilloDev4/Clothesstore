@@ -14,4 +14,5 @@ public interface IProductService {
     List<MostSearchedProductDTO> getMostSearchedProducts();
     void deleteById(Long id);
     Product update(Long id,ProductDTO productDTO);
+    List<ProductDTO> findAll();
 }
